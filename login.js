@@ -37,3 +37,31 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+// user.js
+
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
+
+// Hash password before saving to the database
+userSchema.pre('save', async function (next) {
+    try {
+        // Generate a salt
+        const salt = await bcrypt.genSalt(10);
+        // Hash the password with the salt
+        const hashedPassword = await bcrypt.hash(this.password, salt);
+        // Replace plain text password with hashed password
+        this.password = hashedPassword;
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
