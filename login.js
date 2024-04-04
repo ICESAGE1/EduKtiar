@@ -1,67 +1,65 @@
-// server.js
-
+// Import required modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const User = require('user');
 
+// Initialize express app
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB Atlas
-mongoose.connect('mongodb+srv://Prawin123:Prawin123@cluster0.vvkh3oz.mongodb.net', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('Connected to MongoDB Atlas');
-        app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
-    })
-    .catch(err => console.error('Error connecting to MongoDB Atlas:', err));
-
+// Body parser middleware
 app.use(bodyParser.json());
 
-// Login endpoint
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        if (await bcrypt.compare(password, user.password)) {
-            return res.status(200).json({ message: 'Login successful' });
-        } else {
-            return res.status(401).json({ message: 'Invalid password' });
-        }
-    } catch (error) {
-        console.error('Error during login:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-// user.js
+// MongoDB connection
+mongoose.connect('mongodb+srv://aayushjhaa901:ZjRQp4N6w8nYpJMQ@cluster0.vvkh3oz.mongodb.net', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log(err));
 
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
+// Define a schema for user
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true },
     password: { type: String, required: true }
 });
 
-// Hash password before saving to the database
-userSchema.pre('save', async function (next) {
+// Define a model for user
+const User = mongoose.model('User', userSchema);
+
+// Signup endpoint
+app.post('/signup', async (req, res) => {
+    const { email, password } = req.body;
     try {
-        // Generate a salt
-        const salt = await bcrypt.genSalt(10);
-        // Hash the password with the salt
-        const hashedPassword = await bcrypt.hash(this.password, salt);
-        // Replace plain text password with hashed password
-        this.password = hashedPassword;
-        next();
-    } catch (error) {
-        next(error);
+        // Check if email already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+        // Create new user
+        const newUser = new User({ email, password });
+        await newUser.save();
+        res.status(201).json({ message: 'Signup successful' });
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 
-const User = mongoose.model('User', userSchema);
+// Login endpoint
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        // Find user by email and password
+        const user = await User.findOne({ email, password });
+        if (user) {
+            // If user found, return success
+            res.status(200).json({ message: 'Login successful' });
+        } else {
+            // If user not found, return error
+            res.status(401).json({ message: 'Invalid email or password' });
+        }
+    } catch (err) {
+        // If any error occurs, return error response
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
-module.exports = User;
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
