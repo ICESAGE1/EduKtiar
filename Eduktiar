@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Courses</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Online Courses Platform</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Unlock Your Potential with Our Courses</h2>
+            <p>Learn from industry experts and enhance your skills.</p>
+            <a href="#" class="btn">Browse Courses</a>
+        </div>
+    </section>
+
+    <!-- More sections for featured courses, testimonials, etc. -->
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Online Courses Platform. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
