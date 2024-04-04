@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('./models/user');
+const User = require('user');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
