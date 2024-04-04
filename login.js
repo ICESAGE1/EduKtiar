@@ -9,13 +9,13 @@ const User = require('./models/user');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://aayushjhaa901:<password>@cluster0.vvkh3oz.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
+// Connect to MongoDB Atlas
+mongoose.connect('mongodb+srv://<username>:<password>@<cluster>/<database>?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        console.log('Connected to MongoDB');
+        console.log('Connected to MongoDB Atlas');
         app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
     })
-    .catch(err => console.error('Error connecting to MongoDB:', err));
+    .catch(err => console.error('Error connecting to MongoDB Atlas:', err));
 
 app.use(bodyParser.json());
 
@@ -37,31 +37,3 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
-// Signup endpoint
-app.post('/signup', async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const existingUser = await User.findOne({ username });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Username already exists' });
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, password: hashedPassword });
-        await newUser.save();
-        res.status(201).json({ message: 'User created successfully' });
-    } catch (error) {
-        console.error('Error during signup:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-// User model
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-});
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
