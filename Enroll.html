@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login and Signup Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    form {
+        background: #fff;
+        max-width: 300px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="password"] {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    input[type="submit"] {
+        width: 100%;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background: #0056b3;
+    }
+</style>
+</head>
+<body>
+    <form id="loginForm" style="display: block;">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <input type="submit" value="Login">
+        <p id="loginError" style="color: red; display: none;">Invalid username or password</p>
+    </form>
+    <form id="signupForm" style="display: none;">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupUsername" placeholder="Username" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <input type="submit" value="Sign Up">
+        <p id="signupSuccess" style="color: green; display: none;">Sign up successful! You can now login.</p>
+    </form>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var username = document.getElementById("loginUsername").value;
+            var password = document.getElementById("loginPassword").value;
+            var storedUsername = localStorage.getItem("username");
+            var storedPassword = localStorage.getItem("password");
+            if (username === storedUsername && password === storedPassword) {
+                alert("Login successful!");
+            } else {
+                document.getElementById("loginError").style.display = "block";
+            }
+        });
+
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var username = document.getElementById("signupUsername").value;
+            var password = document.getElementById("signupPassword").value;
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            document.getElementById("signupSuccess").style.display = "block";
+            document.getElementById("loginForm").style.display = "block";
+            document.getElementById("signupForm").style.display = "none";
+        });
+    </script>
+</body>
+</html>
