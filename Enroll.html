@@ -58,42 +58,42 @@
     </form>
 
     <script>
-        function showSignupForm() {
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("signupForm").style.display = "block";
-        }
+  // Login
+  function login() {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
 
-        function showLoginForm() {
-            document.getElementById("signupForm").style.display = "none";
-            document.getElementById("loginForm").style.display = "block";
-        }
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        var user = userCredential.user;
+        // Redirect to homepage or perform other actions
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // Handle login errors
+      });
+  }
 
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            var username = document.getElementById("loginUsername").value;
-            var password = document.getElementById("loginPassword").value;
-            var storedUsername = localStorage.getItem("username");
-            var storedPassword = localStorage.getItem("password");
-            if (username === storedUsername && password === storedPassword) {
-                alert("Login successful!");
-                   // Redirect to your homepage
-            window.location.href = "Eduktiar.html";
-            } else {
-                document.getElementById("loginError").style.display = "block";
-            }
-        });
+  // Signup
+  function signup() {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
 
-        document.getElementById("signupForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            var username = document.getElementById("signupUsername").value;
-            var password = document.getElementById("signupPassword").value;
-            localStorage.setItem("username", username);
-            localStorage.setItem("password", password);
-            document.getElementById("signupSuccess").style.display = "block";
-            document.getElementById("loginForm").style.display = "block";
-            document.getElementById("signupForm").style.display = "none";
-        });
-    </script>
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed up
+        var user = userCredential.user;
+        // Redirect to homepage or perform other actions
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // Handle signup errors
+      });
+  }
+</script>
     
     <script type="module">
   // Import the functions you need from the SDKs you need
