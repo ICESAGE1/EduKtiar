@@ -1,98 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login and Signup Page</title>
+<style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
     }
-
-    .container {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-      width: 320px;
+    form {
+        background: #fff;
+        max-width: 300px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
     }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    input[type="text"], input[type="password"] {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
     }
-
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
     input[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+        width: 100%;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        cursor: pointer;
     }
-
     input[type="submit"]:hover {
-      background-color: #0056b3;
+        background: #0056b3;
     }
-
-    .message {
-      text-align: center;
-      margin-top: 20px;
-    }
-  </style>
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="text" id="email" name="email" placeholder="Email" required>
-      <input type="password" id="password" name="password" placeholder="Password" required>
-      <input type="submit" value="Login">
+    <form id="loginForm" style="display: block;">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <input type="submit" value="Login">
+        <p id="loginError" style="color: red; display: none;">Invalid username or password</p>
     </form>
-    <div class="message" id="message"></div>
-  </div>
-  
-  <script>
-    const loginForm = document.getElementById('loginForm');
-    const message = document.getElementById('message');
-    
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = e.target.email.value;
-      const password = e.target.password.value;
-      
-      // Simulate login logic (replace with actual login logic)
-      if (email === 'user@example.com' && password === 'password') {
-        message.textContent = 'Login successful';
-        message.style.color = 'green';
-        // Redirect to dashboard or another page
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 1000);
-      } else {
-        message.textContent = 'Invalid email or password';
-        message.style.color = 'red';
-      }
-    });
-  </script>
+    <form id="signupForm" style="display: none;">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupUsername" placeholder="Username" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <input type="submit" value="Sign Up">
+        <p id="signupSuccess" style="color: green; display: none;">Sign up successful! You can now login.</p>
+    </form>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var username = document.getElementById("loginUsername").value;
+            var password = document.getElementById("loginPassword").value;
+            var storedUsername = localStorage.getItem("username");
+            var storedPassword = localStorage.getItem("password");
+            if (username === storedUsername && password === storedPassword) {
+                alert("Login successful!");
+            } else {
+                document.getElementById("loginError").style.display = "block";
+            }
+        });
+
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var username = document.getElementById("signupUsername").value;
+            var password = document.getElementById("signupPassword").value;
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            document.getElementById("signupSuccess").style.display = "block";
+            document.getElementById("loginForm").style.display = "block";
+            document.getElementById("signupForm").style.display = "none";
+        });
+    </script>
 </body>
 </html>
