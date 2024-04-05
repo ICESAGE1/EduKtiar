@@ -39,22 +39,35 @@
 </style>
 </head>
 <body>
-    <form id="loginForm" style="display: block;">
+    <form id="loginForm">
         <h2>Login</h2>
         <input type="text" id="loginUsername" placeholder="Username" required>
         <input type="password" id="loginPassword" placeholder="Password" required>
         <input type="submit" value="Login">
         <p id="loginError" style="color: red; display: none;">Invalid username or password</p>
+        <p>Don't have an account? <a href="#" onclick="showSignupForm()">Sign Up</a></p>
     </form>
+    
     <form id="signupForm" style="display: none;">
         <h2>Sign Up</h2>
         <input type="text" id="signupUsername" placeholder="Username" required>
         <input type="password" id="signupPassword" placeholder="Password" required>
         <input type="submit" value="Sign Up">
         <p id="signupSuccess" style="color: green; display: none;">Sign up successful! You can now login.</p>
+        <p>Already have an account? <a href="#" onclick="showLoginForm()">Login</a></p>
     </form>
 
     <script>
+        function showSignupForm() {
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("signupForm").style.display = "block";
+        }
+
+        function showLoginForm() {
+            document.getElementById("signupForm").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+        }
+
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault();
             var username = document.getElementById("loginUsername").value;
