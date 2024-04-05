@@ -76,6 +76,8 @@
             var storedPassword = localStorage.getItem("password");
             if (username === storedUsername && password === storedPassword) {
                 alert("Login successful!");
+                   // Redirect to your homepage
+            window.location.href = "Eduktiar.html";
             } else {
                 document.getElementById("loginError").style.display = "block";
             }
